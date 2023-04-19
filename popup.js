@@ -6,3 +6,4 @@ slider.addEventListener('input', (event) => {
     chrome.tabs.sendMessage(tabs[0].id, { method: 'setFontSize', fontSize });
   });
 });
+

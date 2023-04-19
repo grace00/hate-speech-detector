@@ -7,10 +7,12 @@
  
   "permissions": [
     "https://www.googleapis.com/*",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "content_scripts": [{
     "js": ["content.js"],
+    "css": ["content.css"],
     "matches": ["*://*/*"],
     "run_at": "document_end"
   }],

@@ -5,11 +5,15 @@
     <link rel="stylesheet" type="text/css" href="popup.css" />
     <style>
       body {
-        width: 200px;
-        height: 100px;
-        padding: 10px;
+        width: 250px;
+        padding: 4px 10px 20px 12px;
         font-size: 14px;
-        font-family: "Lato";
+        font-family: "Chivo Mono";
+      }
+
+      h3 {
+        color: #9660FE;
+        font-weight: 400;
       }
 
       label {
@@ -24,8 +28,10 @@
     </style>
   </head>
   <body>
+    <h3>Hate Speech Highlighter</h3>
     <label for="font-size-slider">Adjust hateful text font size</label>
     <input type="range" id="font-size-slider" min="60" max="300" value="14" step="1">
+    <ul id="saved-comments"></ul>
   </body>
   <script src="popup.js"></script>
 </html>

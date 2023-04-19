@@ -1,12 +1,13 @@
 const toxicComments = [];
 let currentFontSize = 60;
+const storage = chrome.storage;
 
 async function analyzeParagraph(paragraph) {
   console.log('analyzing paragraph:', paragraph.innerText.trim());
   chrome.runtime.sendMessage({
     method: 'analyzeParagraph',
     paragraph: paragraph.innerText.trim()
-  }, function(response) {
+  }, function (response) {
     console.log('response received:', response);
     if (response.isToxic) {
       // If the paragraph is deemed toxic, highlight it in yellow
@@ -16,8 +17,13 @@ async function analyzeParagraph(paragraph) {
       paragraph.style.fontWeight = 'bold';
       paragraph.style.fontSize = '60px';
       paragraph.style.lineHeight = '68px';
+      paragraph.style.padding = '12px';
       toxicComments.push(paragraph.innerText.trim());
       console.log("pushed paragraph", paragraph.innerText.trim())
+
+      paragraph.classList.add('bounce');
+
+
     }
   });
 }
@@ -50,3 +56,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.method == "getSelection") {
+    sendResponse({ selection: window.getSelection().toString() });
+  } else {
+    sendResponse({});
+  }
+});
+
+function saveComment(comment) {
+  chrome.storage.sync.get('savedComments', function (data) {
+    const savedComments = data.savedComments || [];
+    savedComments.push(comment);
+    chrome.storage.sync.set({ savedComments }, function () {
+      chrome.runtime.sendMessage({ method: 'updatePopup' });
+    });
+  });
+}
